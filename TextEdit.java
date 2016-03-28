@@ -5,6 +5,8 @@ import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+
 
 
 import javax.swing.*;
@@ -53,13 +55,13 @@ public class TextEdit implements ActionListener {
        
        //GridLayout glayout = new GridLayout(0,1,0,0);
        //BorderLayout blayout = new BorderLayout();
-       //jfrm.setLayout(glayout);//FlowLayout comes from the java.awt pckg
+       //jfrm.setLayout(glayout);//FlowLayout comes from the java.awt pckg 
        
        jfrm.getContentPane().setBackground(Color.white);
        
        JPanel content = new JPanel();
        
-       content.setBackground(Color.lightGray);
+       content.setBackground(Color.white);
        
        jmenu = new JMenuBar();
        fontMenu = new JMenu("Font");
@@ -123,13 +125,14 @@ public class TextEdit implements ActionListener {
        
        jep = new JEditorPane();
        
-       jep.setPreferredSize(new Dimension(700, 800));
-       jep.setText(" ");
+       jep.setSize(new Dimension(700, Integer.MAX_VALUE));
+       jep.setText("Enter text here");
        
        
        jscrl = new JScrollPane(content);
        
-       jscrl.setPreferredSize(new Dimension(1000, 800));
+       jscrl.setSize(new Dimension(1000, 1080));
+       jscrl.setBackground(Color.white);
        
        jfrm.setJMenuBar(jmenu);
        jfrm.add(jscrl);
@@ -189,18 +192,51 @@ public class TextEdit implements ActionListener {
           fileChooser.setAcceptAllFileFilterUsed(false);
           FileNameExtensionFilter filterTxt = new FileNameExtensionFilter(".txt", "txt");
           FileNameExtensionFilter filterJava = new FileNameExtensionFilter(".java", "java");
+          FileNameExtensionFilter filterDocx = new FileNameExtensionFilter(".docx", "docx");
+
 
                   
           fileChooser.addChoosableFileFilter(filterTxt);
           fileChooser.addChoosableFileFilter(filterJava);
+          fileChooser.addChoosableFileFilter(filterDocx);
+
 
           
       int returnValue = fileChooser.showOpenDialog(null);
       
       if(returnValue == JFileChooser.APPROVE_OPTION){
            selectedFile = fileChooser.getSelectedFile();
-
+           
       }else selectedFile = null;
+      if(selectedFile.getName().contains(".docx")){
+          System.out.println(".DOCX FOUND");
+          try {
+			String paraContents ="";
+			FileInputStream fis = new FileInputStream(selectedFile.getAbsolutePath());
+                        
+                        System.out.println("GOOD");
+
+			XWPFDocument doc = new XWPFDocument(fis);
+                        System.out.println("Still good");
+                        
+			XWPFWordExtractor we = new XWPFWordExtractor(doc);
+                        System.out.println("Still good again");
+                        
+			//String[] paragraphs = we.
+                        
+                        jep.setText(we.getText());
+                        System.out.println(we.getText());
+                        
+//                        for(String p : paragraphs){
+//                         paraContents += p;
+//                        }
+//                        jep.setText(paraContents);
+                        
+          }catch(Exception ex){
+              System.out.println(ex);
+          }
+      }
+      else{
       try{
            Scanner sc = new Scanner(selectedFile); 
        
@@ -213,6 +249,7 @@ public class TextEdit implements ActionListener {
           jep.setText(contents);
       }catch(IOException exc){
          JOptionPane.showMessageDialog(openButton, "FILE NOT FOUND");
+      }
       }
         }
         
