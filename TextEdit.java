@@ -272,7 +272,7 @@ public class TextEdit implements ActionListener {
         for(String s : content){
         
         if(s.equals(f)){
-          choice = JOptionPane.showConfirmDialog(findButton, "found " + f + "(" +idx+1 + ")" + " Find next? ");
+          choice = JOptionPane.showConfirmDialog(findButton, "found " + f + "(" +(idx+1) + ")" + " Find next? ");
             idx ++;     
           }
           
@@ -366,11 +366,11 @@ public class TextEdit implements ActionListener {
       */
       
       if(e.getActionCommand().equals("Help")){
-          JOptionPane.showMessageDialog(helpButton, "Open: select a .txt or a .java file to open in editor \n"
-                  + "Find: Enter a word that will be found \n"
+          JOptionPane.showMessageDialog(helpButton, "Open: select a .docx, .txt or .java file to open in editor \n\n"
+                  + "Find: Enter a word that will be found \n\n"
                   + "Replace: Enter first word as the word you would like to be replaced, and the second word as the "
-                  + "word you would like to replace the first word with \n"
-                  + "Word count: Retrieves the number of words in document"
+                  + "word you would like to replace the first word with \n\n"
+                  + "Word count: Retrieves the number of words in document\n\n"
                   + "Character count: Retreives the number of characters in the document"
                   , "HELP", 1
                   );
